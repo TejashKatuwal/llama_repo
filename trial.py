@@ -8,7 +8,7 @@ age = st.number_input("Enter your age", min_value=0, max_value=120, value=25, st
 gender_options = ["Male", "Female", "Other"]
 selected_gender = st.selectbox("Select your gender", gender_options)
 height = st.number_input("Enter your height (in cm)", min_value=0, value=160, step=1)
-sentence = f"You are a {selected_gender.lower()} who is {age} years old and {height} cm tall."
+sentence = f"{selected_gender.lower()} ,{age} years old and {height} cm tall."
 # st.write(sentence)
 
 
@@ -35,13 +35,15 @@ for msg in st.session_state.messages:
     message(msg["content"], is_user=msg["role"] == "user")
 
 if user_prompt:
-    st.session_state.messages.append({"role": "user", "content": user_prompt})
-    message(user_prompt, is_user=True)
 
-    response = llama.get_response(user_prompt)  # get response from llama2 API
+    combined_prompt = f"{user_prompt} {sentence}"
 
-    response_with_input = f"{response}\n\n{sentence}"
-    msg = {"role": "assistant", "content": response_with_input}
+    st.session_state.messages.append({"role": "user", "content": combined_prompt})
+    message(combined_prompt, is_user=True)
+
+    response = llama.get_response(combined_prompt)  # get response from llama2 API
+
+    msg = {"role": "assistant", "content": response}
     st.session_state.messages.append(msg)
     message(msg["content"])
 
