@@ -9,7 +9,7 @@ gender_options = ["Male", "Female", "Other"]
 selected_gender = st.selectbox("Select your gender", gender_options)
 height = st.number_input("Enter your height (in cm)", min_value=0, value=160, step=1)
 sentence = f"You are a {selected_gender.lower()} who is {age} years old and {height} cm tall."
-st.write(sentence)
+# st.write(sentence)
 
 
 def clear_chat():
@@ -40,7 +40,8 @@ if user_prompt:
 
     response = llama.get_response(user_prompt)  # get response from llama2 API
 
-    msg = {"role": "assistant", "content": response}
+    response_with_input = f"{response}\n\n{sentence}"
+    msg = {"role": "assistant", "content": response_with_input}
     st.session_state.messages.append(msg)
     message(msg["content"])
 
