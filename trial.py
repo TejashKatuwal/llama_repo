@@ -2,6 +2,16 @@ import streamlit as st
 from streamlit_chat import message
 import llama
 
+
+# Age, gender, and height input
+age = st.number_input("Enter your age", min_value=0, max_value=120, value=25, step=1)
+gender_options = ["Male", "Female", "Other"]
+selected_gender = st.selectbox("Select your gender", gender_options)
+height = st.number_input("Enter your height (in cm)", min_value=0, value=160, step=1)
+sentence = f"You are a {selected_gender.lower()} who is {age} years old and {height} cm tall."
+st.write(sentence)
+
+
 def clear_chat():
     st.session_state.messages = [{"role": "assistant", "content": "Say something to get started!"}]
 
@@ -34,13 +44,7 @@ if user_prompt:
     st.session_state.messages.append(msg)
     message(msg["content"])
 
-# Age, gender, and height input
-age = st.number_input("Enter your age", min_value=0, max_value=120, value=25, step=1)
-gender_options = ["Male", "Female", "Other"]
-selected_gender = st.selectbox("Select your gender", gender_options)
-height = st.number_input("Enter your height (in cm)", min_value=0, value=160, step=1)
-sentence = f"You are a {selected_gender.lower()} who is {age} years old and {height} cm tall."
-st.write(sentence)
+
 
 if len(st.session_state.messages) > 1:
     st.button('Clear Chat', on_click=clear_chat)
